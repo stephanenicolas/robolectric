@@ -53,9 +53,18 @@ public class ShadowCookieManagerTest {
   public void shouldGetCookieForHostInDomain() {
     CookieManager cookieManager = CookieManager.getInstance();
     String value1 = "my cookie";
-    cookieManager.setCookie("foo.com/", value1);
+    cookieManager.setCookie("foo.com/this%20is%20a%20test", value1);
 
     assertThat(cookieManager.getCookie(".foo.com")).isEqualTo(value1);
+  }
+
+  @Test
+  public void shouldNotGetCookieForHostNotInDomain() {
+    CookieManager cookieManager = CookieManager.getInstance();
+    String value1 = "my cookie";
+    cookieManager.setCookie("bar.foo.com/this%20is%20a%20test", value1);
+
+    assertNull(cookieManager.getCookie(".bar.com"));
   }
 
   @Test
